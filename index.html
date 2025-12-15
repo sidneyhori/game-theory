@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Theory: A Predictive History</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background-color: #f5f5f4;
+      color: #1f2937;
+      line-height: 1.6;
+    }
+
+    header {
+      background: linear-gradient(to right, #292524, #44403c);
+      color: white;
+      padding: 2rem 1.5rem;
+    }
+
+    header h1 {
+      font-family: Georgia, serif;
+      font-size: 1.875rem;
+      font-weight: bold;
+    }
+
+    header .subtitle {
+      margin-top: 0.5rem;
+      color: #e7e5e4;
+      font-size: 1.125rem;
+    }
+
+    header .quote {
+      margin-top: 1rem;
+      color: #e7e5e4;
+      font-style: italic;
+      max-width: 42rem;
+    }
+
+    nav {
+      background-color: #e7e5e4;
+      border-bottom: 1px solid #d6d3d1;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      overflow-x: auto;
+    }
+
+    nav .tabs {
+      display: flex;
+    }
+
+    nav button {
+      padding: 0.75rem 1rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      white-space: nowrap;
+      border: none;
+      background: none;
+      cursor: pointer;
+      color: #4b5563;
+      transition: background-color 0.2s;
+    }
+
+    nav button:hover {
+      background-color: #f5f5f4;
+    }
+
+    nav button.active {
+      background-color: white;
+      color: #b45309;
+      border-bottom: 2px solid #d97706;
+    }
+
+    main {
+      max-width: 56rem;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    h2 {
+      font-family: Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #292524;
+      margin-bottom: 1.5rem;
+    }
+
+    h3 {
+      font-weight: bold;
+      font-size: 1.125rem;
+      margin-bottom: 0.75rem;
+    }
+
+    p {
+      margin-bottom: 1rem;
+    }
+
+    p.lead {
+      font-size: 1.125rem;
+    }
+
+    strong {
+      font-weight: 600;
+    }
+
+    .quote-block {
+      border-left: 4px solid #d97706;
+      padding: 0.5rem 0 0.5rem 1rem;
+      margin: 1.5rem 0;
+      background-color: #fffbeb;
+      font-style: italic;
+      color: #374151;
+    }
+
+    .quote-block .source {
+      font-size: 0.875rem;
+      color: #6b7280;
+      margin-top: 0.5rem;
+      font-style: normal;
+    }
+
+    .card {
+      background: white;
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+      border: 1px solid #e7e5e4;
+      margin: 1.5rem 0;
+    }
+
+    .dark-card {
+      background: #292524;
+      color: white;
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .dark-card h3 {
+      color: white;
+    }
+
+    .dark-card p {
+      color: #e7e5e4;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .grid-item {
+      padding: 1rem;
+      border-radius: 0.375rem;
+    }
+
+    .grid-item.amber { background-color: #fffbeb; }
+    .grid-item.blue { background-color: #eff6ff; }
+    .grid-item.green { background-color: #f0fdf4; }
+
+    .grid-item .title {
+      font-weight: bold;
+      margin-bottom: 0.25rem;
+    }
+
+    .grid-item.amber .title { color: #92400e; }
+    .grid-item.blue .title { color: #1e40af; }
+    .grid-item.green .title { color: #166534; }
+
+    .grid-item .desc {
+      font-size: 0.875rem;
+      color: #4b5563;
+    }
+
+    .philosophy-toggle {
+      margin: 1rem 0;
+    }
+
+    .philosophy-toggle button {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #b45309;
+      font-weight: 500;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .philosophy-toggle button:hover {
+      color: #78350f;
+    }
+
+    .philosophy-toggle .content {
+      display: none;
+      margin-top: 0.75rem;
+      padding-left: 1.5rem;
+      color: #4b5563;
+      border-left: 2px solid #fde68a;
+    }
+
+    .philosophy-toggle .content.open {
+      display: block;
+    }
+
+    .philosophy-toggle .content p {
+      margin-bottom: 0.75rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+      margin: 1rem 0;
+    }
+
+    th, td {
+      border: 1px solid #d1d5db;
+      padding: 0.75rem;
+      text-align: center;
+    }
+
+    th {
+      background-color: #f9fafb;
+    }
+
+    th.blue { background-color: #eff6ff; }
+    th.red { background-color: #fef2f2; }
+
+    td.green { background-color: #f0fdf4; }
+    td.yellow { background-color: #fefce8; }
+    td.red { background-color: #fef2f2; }
+
+    .payoff-green { font-weight: bold; color: #15803d; }
+    .payoff-red { font-weight: bold; color: #dc2626; }
+    .payoff-blue { font-weight: bold; color: #2563eb; }
+    .payoff-gray { font-weight: bold; color: #4b5563; }
+
+    .game-box {
+      background-color: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .game-box.green {
+      background-color: #f0fdf4;
+      border-color: #bbf7d0;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .btn-blue {
+      background-color: #2563eb;
+      color: white;
+    }
+
+    .btn-blue:hover {
+      background-color: #1d4ed8;
+    }
+
+    .btn-red {
+      background-color: #dc2626;
+      color: white;
+    }
+
+    .btn-red:hover {
+      background-color: #b91c1c;
+    }
+
+    .btn-gray {
+      background-color: #e7e5e4;
+      color: #374151;
+    }
+
+    .btn-gray:hover {
+      background-color: #d6d3d1;
+    }
+
+    .btn-outline-blue {
+      background-color: #dbeafe;
+      color: #1e40af;
+    }
+
+    .btn-outline-blue:hover {
+      background-color: #bfdbfe;
+    }
+
+    .btn-outline-blue.active {
+      background-color: #2563eb;
+      color: white;
+    }
+
+    .btn-outline-red {
+      background-color: #fee2e2;
+      color: #991b1b;
+    }
+
+    .btn-outline-red:hover {
+      background-color: #fecaca;
+    }
+
+    .btn-outline-red.active {
+      background-color: #dc2626;
+      color: white;
+    }
+
+    .btn-outline-green {
+      background-color: #dcfce7;
+      color: #166534;
+    }
+
+    .btn-outline-green:hover {
+      background-color: #bbf7d0;
+    }
+
+    .btn-outline-green.active {
+      background-color: #16a34a;
+      color: white;
+    }
+
+    .btn-outline-amber {
+      background-color: #fef3c7;
+      color: #92400e;
+    }
+
+    .btn-outline-amber:hover {
+      background-color: #fde68a;
+    }
+
+    .btn-outline-amber.active {
+      background-color: #d97706;
+      color: white;
+    }
+
+    .result-box {
+      background: white;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      border: 1px solid #fde68a;
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    .result-box.green-border {
+      border-color: #86efac;
+    }
+
+    .result-box p {
+      font-size: 1.125rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .result-box .outcome {
+      font-size: 1.25rem;
+      font-weight: bold;
+      margin-top: 1rem;
+    }
+
+    .outcome.green { color: #16a34a; }
+    .outcome.red { color: #dc2626; }
+    .outcome.amber { color: #d97706; }
+    .outcome.gray { color: #4b5563; }
+
+    .score-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem;
+      background-color: #f5f5f4;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .score-bar .blue { color: #2563eb; }
+    .score-bar .red { color: #dc2626; }
+
+    .game-over {
+      text-align: center;
+      padding: 1rem;
+      background-color: #292524;
+      color: white;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .game-over .title {
+      font-size: 1.25rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    .game-over .score {
+      font-size: 0.875rem;
+      color: #d6d3d1;
+      margin-top: 0.5rem;
+    }
+
+    .history {
+      margin-top: 1rem;
+    }
+
+    .history h4 {
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+
+    .history-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .history-item {
+      font-size: 0.75rem;
+      padding: 0.5rem;
+      background-color: #f5f5f4;
+      border-radius: 0.25rem;
+    }
+
+    select {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #d1d5db;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
+
+    .lesson-item {
+      border-left: 4px solid;
+      padding: 0.5rem 0 0.5rem 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .lesson-item.red { border-color: #ef4444; }
+    .lesson-item.blue { border-color: #3b82f6; }
+    .lesson-item.green { border-color: #22c55e; }
+    .lesson-item.purple { border-color: #a855f7; }
+    .lesson-item.amber { border-color: #f59e0b; }
+
+    .lesson-item .title {
+      font-weight: bold;
+    }
+
+    .lesson-item.red .title { color: #991b1b; }
+    .lesson-item.blue .title { color: #1e40af; }
+    .lesson-item.green .title { color: #166534; }
+    .lesson-item.purple .title { color: #7e22ce; }
+    .lesson-item.amber .title { color: #92400e; }
+
+    .lesson-item .desc {
+      font-size: 0.875rem;
+      color: #4b5563;
+      margin-top: 0.25rem;
+    }
+
+    .gradient-card {
+      background: linear-gradient(to right, #292524, #44403c);
+      color: white;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .gradient-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .gradient-card p {
+      color: #e7e5e4;
+      margin-bottom: 1rem;
+    }
+
+    .gradient-card p:last-child {
+      color: white;
+      font-weight: 500;
+      margin-bottom: 0;
+    }
+
+    .further-study {
+      background-color: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .further-study ul {
+      list-style: none;
+    }
+
+    .further-study li {
+      margin-bottom: 0.75rem;
+      color: #374151;
+    }
+
+    .further-study a {
+      color: #b45309;
+      text-decoration: underline;
+    }
+
+    .further-study a:hover {
+      color: #78350f;
+    }
+
+    footer {
+      background-color: #292524;
+      color: #e7e5e4;
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 0.875rem;
+    }
+
+    footer .credit {
+      color: #d6d3d1;
+      margin-top: 0.5rem;
+    }
+
+    ul.spaced li {
+      margin-bottom: 0.5rem;
+    }
+
+    em {
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Game Theory: A Predictive History</h1>
+    <p class="subtitle">In the style of Professor Jiang Xueqin</p>
+    <p class="quote">"The gap between what we say and what we do—this is where game theory lives. Not in equations, but in the space between our ideals and our actions."</p>
+  </header>
+
+  <nav>
+    <div class="tabs">
+      <button class="active" data-tab="introduction">The Paradox</button>
+      <button data-tab="prisoners">Prisoner's Dilemma</button>
+      <button data-tab="iterated">The Shadow of the Future</button>
+      <button data-tab="chicken">Chicken & Brinksmanship</button>
+      <button data-tab="stag">Stag Hunt & Trust</button>
+      <button data-tab="lessons">Bitter Lessons</button>
+    </div>
+  </nav>
+
+  <main>
+    <!-- INTRODUCTION TAB -->
+    <div id="introduction" class="tab-content active">
+      <h2>The Paradox of Rational Self-Interest</h2>
+      
+      <p class="lead">Let me tell you something that took me years to understand. When I was at Yale, I believed intelligence was about solving problems. Get the right answer, win the game, move up the ladder. But here's what game theory taught me: <strong>the "right" answer often makes everyone worse off.</strong></p>
+
+      <div class="quote-block">
+        "And the life of man, solitary, poor, nasty, brutish, and short."
+        <div class="source">— Thomas Hobbes, Leviathan (1651)</div>
+      </div>
+
+      <p>Hobbes wasn't describing ancient times. He was describing what happens when rational individuals pursue their own interests without coordination. Game theory—developed by John von Neumann during World War II and refined during the Cold War—gives us the mathematics to prove Hobbes right.</p>
+
+      <div class="card">
+        <h3>What Game Theory Actually Studies</h3>
+        <p style="color: #4b5563;">Not games like chess or poker—though those are included. Game theory studies <strong>strategic interaction</strong>: situations where your best choice depends on what others choose, and their best choice depends on what you choose.</p>
+        <div class="grid-3">
+          <div class="grid-item amber">
+            <div class="title">Arms Races</div>
+            <div class="desc">Why nations build weapons they never want to use</div>
+          </div>
+          <div class="grid-item blue">
+            <div class="title">Market Competition</div>
+            <div class="desc">Why price wars destroy profits for everyone</div>
+          </div>
+          <div class="grid-item green">
+            <div class="title">Climate Change</div>
+            <div class="desc">Why individual nations won't sacrifice alone</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="philosophy-toggle">
+        <button onclick="togglePhilosophy('eastern')">
+          <span id="eastern-arrow">▶</span> Eastern vs. Western Perspectives
+        </button>
+        <div id="eastern-content" class="content">
+          <p>Western game theory assumes players are isolated rational actors. But Confucian thought begins with <em>guanxi</em>—relationships. The self doesn't exist apart from community.</p>
+          <p>This isn't just philosophy. It's predictive. Western models failed to anticipate China's economic rise precisely because they couldn't model relationship-based coordination.</p>
+        </div>
+      </div>
+
+      <div class="dark-card">
+        <h3>The Core Question</h3>
+        <p>If everyone acting rationally leads to collective disaster, what does that tell us about rationality itself? This is the question that haunts economics, politics, and—I would argue—modern education.</p>
+      </div>
+    </div>
+
+    <!-- PRISONER'S DILEMMA TAB -->
+    <div id="prisoners" class="tab-content">
+      <h2>The Prisoner's Dilemma</h2>
+      
+      <p class="lead">In 1950, two RAND Corporation scientists—Merrill Flood and Melvin Dresher—devised a scenario that would become the most studied problem in social science. It reveals why cooperation is so hard, even when everyone would benefit.</p>
+
+      <div class="card">
+        <h3>The Story</h3>
+        <p style="color: #374151;">Two criminals are arrested. The police separate them and offer each the same deal:</p>
+        <ul class="spaced" style="margin-top: 0.75rem; color: #4b5563; padding-left: 1.5rem;">
+          <li>• If you <strong>betray</strong> your partner and they stay silent, you go free; they get 5 years</li>
+          <li>• If you both <strong>stay silent</strong>, you each get 1 year on a lesser charge</li>
+          <li>• If you both <strong>betray</strong> each other, you each get 3 years</li>
+        </ul>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th class="blue">Partner Cooperates</th>
+            <th class="red">Partner Defects</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th class="blue">You Cooperate</th>
+            <td class="green"><span class="payoff-green">1 year</span>, <span class="payoff-green">1 year</span></td>
+            <td class="yellow"><span class="payoff-red">5 years</span>, <span class="payoff-blue">Free</span></td>
+          </tr>
+          <tr>
+            <th class="red">You Defect</th>
+            <td class="yellow"><span class="payoff-blue">Free</span>, <span class="payoff-red">5 years</span></td>
+            <td class="red"><span class="payoff-gray">3 years</span>, <span class="payoff-gray">3 years</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="game-box">
+        <h3>Try It Yourself</h3>
+        <p style="color: #4b5563; margin-bottom: 1rem;">You've been arrested with a partner. The police are offering you a deal. What do you choose?</p>
+        
+        <div class="btn-row">
+          <button class="btn btn-blue" onclick="playPrisonersDilemma('cooperate')">Stay Silent (Cooperate)</button>
+          <button class="btn btn-red" onclick="playPrisonersDilemma('defect')">Betray (Defect)</button>
+        </div>
+
+        <div id="prisoner-result" class="result-box" style="display: none;"></div>
+      </div>
+
+      <div class="quote-block">
+        "Here's the tragedy: betrayal is always the 'rational' choice. If your partner stays silent, betraying gets you freedom instead of one year. If your partner betrays, betraying gets you three years instead of five. Betrayal dominates. Yet if both players are 'rational,' both end up worse than if they'd trusted each other."
+        <div class="source">— Professor Jiang's observation</div>
+      </div>
+
+      <div class="philosophy-toggle">
+        <button onclick="togglePhilosophy('nash')">
+          <span id="nash-arrow">▶</span> The Nash Equilibrium & Its Discontents
+        </button>
+        <div id="nash-content" class="content">
+          <p>John Nash proved that every finite game has at least one equilibrium—a set of strategies where no player can improve by changing their choice alone. In the Prisoner's Dilemma, mutual defection is the only Nash equilibrium.</p>
+          <p>But Nash equilibria can be disasters. The arms race between the US and USSR was a Nash equilibrium. Neither side could unilaterally disarm without risking destruction. Both sides spent trillions on weapons they hoped never to use.</p>
+          <p>This is what I mean when I say rationality can be a trap. The Chinese concept of <em>zhongyong</em>—the doctrine of the mean—suggests that extreme positions, even "rationally" derived ones, lead to imbalance.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ITERATED GAME TAB -->
+    <div id="iterated" class="tab-content">
+      <h2>The Shadow of the Future</h2>
+      
+      <p class="lead">In 1980, political scientist Robert Axelrod asked a simple question: if the Prisoner's Dilemma is played repeatedly, can cooperation emerge? He invited game theorists worldwide to submit strategies for a computer tournament.</p>
+
+      <p>The winner? <strong>Tit-for-Tat</strong>—the simplest strategy submitted. Start by cooperating. Then do whatever your opponent did last round. That's it.</p>
+
+      <div class="card">
+        <h3>Play the Iterated Game</h3>
+        <p style="color: #4b5563; margin-bottom: 1rem;">You'll play 10 rounds against a computer opponent. Points: Mutual cooperation = 3 each, mutual defection = 1 each, betrayal = 5 for defector, 0 for cooperator.</p>
+        
+        <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 0.5rem;">Opponent's Strategy:</label>
+        <select id="strategy-select" onchange="resetIteratedGame()">
+          <option value="titForTat">Tit-for-Tat (cooperate first, then mirror)</option>
+          <option value="alwaysDefect">Always Defect</option>
+          <option value="alwaysCooperate">Always Cooperate</option>
+          <option value="grudger">Grudger (cooperate until betrayed, then defect forever)</option>
+          <option value="random">Random</option>
+        </select>
+
+        <div class="score-bar">
+          <div>Round: <strong id="round-display">0</strong>/10</div>
+          <div>Your Score: <strong class="blue" id="your-score">0</strong></div>
+          <div>Opponent: <strong class="red" id="opp-score">0</strong></div>
+        </div>
+
+        <div id="iterated-buttons" class="btn-row">
+          <button class="btn btn-blue" onclick="playIteratedRound('cooperate')">Cooperate</button>
+          <button class="btn btn-red" onclick="playIteratedRound('defect')">Defect</button>
+        </div>
+
+        <div id="game-over" class="game-over" style="display: none;"></div>
+
+        <button class="btn btn-gray" style="width: 100%;" onclick="resetIteratedGame()">Reset Game</button>
+
+        <div id="history" class="history" style="display: none;">
+          <h4>History:</h4>
+          <div id="history-items" class="history-items"></div>
+        </div>
+      </div>
+
+      <div class="quote-block">
+        "The shadow of the future makes cooperation rational. When you know you'll meet again, betrayal today costs you tomorrow. This is why villages have more trust than cities, why long-term business relationships outperform one-time deals, and why the breakdown of community destroys social capital."
+      </div>
+
+      <div class="philosophy-toggle">
+        <button onclick="togglePhilosophy('axelrod')">
+          <span id="axelrod-arrow">▶</span> Lessons from Axelrod's Tournament
+        </button>
+        <div id="axelrod-content" class="content">
+          <p><strong>Be Nice:</strong> Never be the first to defect. Nice strategies consistently outperformed exploitative ones.</p>
+          <p><strong>Be Retaliatory:</strong> Punish defection immediately. Pushovers get exploited.</p>
+          <p><strong>Be Forgiving:</strong> Don't hold grudges forever. Return to cooperation when the opponent does.</p>
+          <p><strong>Be Clear:</strong> Simple, predictable strategies build trust. Complexity breeds suspicion.</p>
+        </div>
+      </div>
+
+      <div class="dark-card">
+        <h3>The Educational Implication</h3>
+        <p>When I ran education programs in Shenzhen, I saw this play out. Schools that treated students as one-time test-takers created defectors—cheaters, grade-grubbers, resume-padders. Schools that built long-term relationships created cooperators. The shadow of the future changes everything.</p>
+      </div>
+    </div>
+
+    <!-- CHICKEN TAB -->
+    <div id="chicken" class="tab-content">
+      <h2>Chicken: The Game of Brinksmanship</h2>
+      
+      <p class="lead">Two cars race toward each other. The first to swerve is the "chicken." But if neither swerves, both die. This isn't just a 1950s American pastime—it's how superpowers negotiate.</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th class="blue">Opponent Swerves</th>
+            <th class="red">Opponent Straight</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th class="blue">You Swerve</th>
+            <td class="green"><span class="payoff-green">Tie (0)</span>, <span class="payoff-green">Tie (0)</span></td>
+            <td class="yellow"><span class="payoff-red">Chicken (-1)</span>, <span class="payoff-blue">Win (+1)</span></td>
+          </tr>
+          <tr>
+            <th class="red">You Straight</th>
+            <td class="yellow"><span class="payoff-blue">Win (+1)</span>, <span class="payoff-red">Chicken (-1)</span></td>
+            <td class="red"><span class="payoff-gray">💀 Dead</span>, <span class="payoff-gray">💀 Dead</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="game-box">
+        <h3>Cuban Missile Crisis Simulator</h3>
+        <p style="color: #4b5563; margin-bottom: 1rem;">October 1962. You're Kennedy. Khrushchev has put missiles in Cuba. Your military wants to invade. What do you do?</p>
+        
+        <div class="btn-row">
+          <button id="chicken-swerve" class="btn btn-outline-blue" onclick="playChicken('swerve')">Negotiate (Swerve)</button>
+          <button id="chicken-straight" class="btn btn-outline-red" onclick="playChicken('straight')">Military Strike (Straight)</button>
+        </div>
+
+        <div id="chicken-result" class="result-box" style="display: none;"></div>
+      </div>
+
+      <div class="quote-block">
+        "The power to hurt is bargaining power. To exploit it is diplomacy—vicious diplomacy, but diplomacy."
+        <div class="source">— Thomas Schelling, Nobel laureate in Economics</div>
+      </div>
+
+      <div class="philosophy-toggle">
+        <button onclick="togglePhilosophy('chickenPhil')">
+          <span id="chickenPhil-arrow">▶</span> The Madman Theory & Its Modern Applications
+        </button>
+        <div id="chickenPhil-content" class="content">
+          <p>Nixon explicitly tried to convince the North Vietnamese he was irrational enough to use nuclear weapons—the "Madman Theory." Trump's unpredictability served a similar strategic purpose.</p>
+          <p>The problem: if everyone tries to look crazy, eventually someone <em>is</em> crazy, or mistakes madness for bluffing. Game theory can model the strategy but can't predict the catastrophe.</p>
+          <p>In Chinese strategic thought, <em>shi</em> (势)—strategic positioning—matters more than direct confrontation. You change the game rather than playing chicken within it. This is why China's approach to Taiwan emphasizes economic integration over military threats.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- STAG HUNT TAB -->
+    <div id="stag" class="tab-content">
+      <h2>The Stag Hunt: Building Trust</h2>
+      
+      <p class="lead">Jean-Jacques Rousseau posed this scenario: Two hunters can either cooperate to catch a stag (big reward, requires both) or individually catch rabbits (small reward, guaranteed).</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th class="blue">Partner Hunts Stag</th>
+            <th class="red">Partner Hunts Rabbit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th class="blue">You Hunt Stag</th>
+            <td class="green"><span class="payoff-green">🦌 Stag (5)</span>, <span class="payoff-green">🦌 Stag (5)</span></td>
+            <td class="yellow"><span class="payoff-red">Nothing (0)</span>, <span class="payoff-blue">🐰 Rabbit (2)</span></td>
+          </tr>
+          <tr>
+            <th class="red">You Hunt Rabbit</th>
+            <td class="yellow"><span class="payoff-blue">🐰 Rabbit (2)</span>, <span class="payoff-red">Nothing (0)</span></td>
+            <td class="red"><span class="payoff-gray">🐰 Rabbit (2)</span>, <span class="payoff-gray">🐰 Rabbit (2)</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="game-box green">
+        <h3>The Trust Decision</h3>
+        <p style="color: #4b5563; margin-bottom: 1rem;">Unlike the Prisoner's Dilemma, cooperation here is stable IF you trust your partner. The question is: do you?</p>
+        
+        <div class="btn-row">
+          <button id="stag-stag" class="btn btn-outline-green" onclick="playStagHunt('stag')">Hunt Stag (Cooperate)</button>
+          <button id="stag-rabbit" class="btn btn-outline-amber" onclick="playStagHunt('rabbit')">Hunt Rabbit (Safe)</button>
+        </div>
+
+        <div id="stag-result" class="result-box green-border" style="display: none;"></div>
+      </div>
+
+      <div class="quote-block">
+        "Education is a stag hunt. Learning requires trust—trust that effort will be rewarded, that teachers mean well, that knowledge has value. When that trust breaks down, everyone hunts rabbits: students cheat, teachers teach to tests, administrators optimize metrics. Everyone gets their rabbit. No one gets the stag."
+      </div>
+
+      <div class="philosophy-toggle">
+        <button onclick="togglePhilosophy('stagPhil')">
+          <span id="stagPhil-arrow">▶</span> Building Trust: Lessons from High-Trust Societies
+        </button>
+        <div id="stagPhil-content" class="content">
+          <p><strong>Scandinavia:</strong> High taxes work because trust is high. People believe others pay their share.</p>
+          <p><strong>Japan:</strong> Lost wallets get returned. Social shame enforces cooperation.</p>
+          <p><strong>China's Villages:</strong> Traditional <em>guanxi</em> networks enabled cooperation without formal contracts.</p>
+          <p><strong>Silicon Valley:</strong> Handshake deals work because reputation matters in a small community.</p>
+          <p style="margin-top: 0.5rem; font-style: italic;">Notice: all of these depend on either repeated interaction (shadow of the future) or shared identity (we're all in this together). Anonymous one-shot games destroy trust.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- LESSONS TAB -->
+    <div id="lessons" class="tab-content">
+      <h2>Bitter Lessons</h2>
+      
+      <p class="lead">I've spent two decades watching education reform fail. In Shenzhen, at Peking University High School, at Tsinghua. Each time, the game-theoretic traps caught us.</p>
+
+      <div class="card">
+        <h3>What Game Theory Teaches Us About Life</h3>
+        
+        <div class="lesson-item red">
+          <div class="title">1. Individual Rationality ≠ Collective Good</div>
+          <div class="desc">The most important lesson. Markets, democracies, and meritocracies all assume individual optimization leads to collective benefit. Game theory shows this is often false.</div>
+        </div>
+
+        <div class="lesson-item blue">
+          <div class="title">2. The Future Changes the Present</div>
+          <div class="desc">Cooperation emerges when people expect to interact again. Destroying long-term relationships—through job-hopping, anonymous transactions, or weak communities—destroys cooperation.</div>
+        </div>
+
+        <div class="lesson-item green">
+          <div class="title">3. Trust is a Coordination Problem</div>
+          <div class="desc">Getting from low-trust to high-trust equilibrium requires leadership, shared identity, or external enforcement. It doesn't happen naturally.</div>
+        </div>
+
+        <div class="lesson-item purple">
+          <div class="title">4. Incentives Shape Behavior More Than Values</div>
+          <div class="desc">People respond to payoff structures, not moral exhortations. Want different behavior? Change the game, not the players.</div>
+        </div>
+
+        <div class="lesson-item amber">
+          <div class="title">5. Simple Strategies Often Win</div>
+          <div class="desc">Tit-for-tat beat sophisticated strategies. Clarity and predictability build trust. Cleverness breeds suspicion.</div>
+        </div>
+      </div>
+
+      <div class="quote-block">
+        "Were I to do it all over again, I wouldn't have any fixed criteria for admissions. I'd keep my biases and personal tastes out of it. And I'd make resources available to all. It was 90% my problem. I didn't respect those kids, nor did I communicate myself as best as I could. That's what I regret the most."
+        <div class="source">— Personal reflection</div>
+      </div>
+
+      <div class="gradient-card">
+        <h3>The Deeper Question</h3>
+        <p>Game theory reveals the architecture of human conflict and cooperation. But it can't tell us what games we <em>should</em> play.</p>
+        <p>The Chinese education system is a Prisoner's Dilemma. Students who study harder force everyone else to study harder. Everyone ends up exhausted, competing for the same fixed number of spots. The American system is a Stag Hunt that's collapsing into rabbit-hunting as trust erodes.</p>
+        <p>The question isn't how to win these games. It's whether we have the wisdom—and the courage—to change them.</p>
+      </div>
+
+      <div class="further-study">
+        <h3>For Further Study</h3>
+        <ul>
+          <li>• <strong>Robert Axelrod</strong> - <a href="https://www.amazon.com/Evolution-Cooperation-Revised-Robert-Axelrod/dp/0465005640" target="_blank" rel="noopener noreferrer">"The Evolution of Cooperation"</a></li>
+          <li>• <strong>Thomas Schelling</strong> - <a href="https://www.amazon.com/Strategy-Conflict-Thomas-C-Schelling/dp/0674840313" target="_blank" rel="noopener noreferrer">"The Strategy of Conflict"</a></li>
+          <li>• <strong>Elinor Ostrom</strong> - <a href="https://www.amazon.com/Governing-Commons-Evolution-Institutions-Collective/dp/1107569788" target="_blank" rel="noopener noreferrer">"Governing the Commons"</a> (Nobel Prize work on escaping the tragedy of the commons)</li>
+          <li>• <strong>Jiang Xueqin</strong> - <a href="https://www.youtube.com/@ProfJiang" target="_blank" rel="noopener noreferrer">Predictive History (YouTube)</a> & <a href="https://www.amazon.com/Schools-Soul-Approach-Spiritual-Education/dp/1475862156" target="_blank" rel="noopener noreferrer">"Schools for the Soul"</a></li>
+          <li>• <strong>Michael Sandel</strong> - <a href="https://www.amazon.com/Tyranny-Merit-Whats-Become-Common/dp/0374289980" target="_blank" rel="noopener noreferrer">"The Tyranny of Merit"</a></li>
+        </ul>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>"Game theory doesn't tell us how to live. It tells us why living well together is so hard—and therefore so valuable."</p>
+    <p class="credit">Interactive exploration inspired by the teaching style of Professor Jiang Xueqin</p>
+  </footer>
+
+  <script>
+    // Tab navigation
+    document.querySelectorAll('nav button').forEach(button => {
+      button.addEventListener('click', () => {
+        // Remove active class from all tabs and buttons
+        document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        
+        // Add active class to clicked button and corresponding tab
+        button.classList.add('active');
+        document.getElementById(button.dataset.tab).classList.add('active');
+      });
+    });
+
+    // Philosophy toggles
+    function togglePhilosophy(id) {
+      const content = document.getElementById(id + '-content');
+      const arrow = document.getElementById(id + '-arrow');
+      content.classList.toggle('open');
+      arrow.textContent = content.classList.contains('open') ? '▼' : '▶';
+    }
+
+    // Prisoner's Dilemma one-shot game
+    function playPrisonersDilemma(choice) {
+      const opponent = Math.random() > 0.5 ? 'cooperate' : 'defect';
+      const resultBox = document.getElementById('prisoner-result');
+      
+      let outcome, outcomeClass;
+      if (choice === 'cooperate' && opponent === 'cooperate') {
+        outcome = 'You both get 1 year. Trust worked!';
+        outcomeClass = 'green';
+      } else if (choice === 'cooperate' && opponent === 'defect') {
+        outcome = 'You get 5 years. You were betrayed.';
+        outcomeClass = 'red';
+      } else if (choice === 'defect' && opponent === 'cooperate') {
+        outcome = 'You go free. But at what cost?';
+        outcomeClass = 'amber';
+      } else {
+        outcome = 'You both get 3 years. Mutual betrayal.';
+        outcomeClass = 'gray';
+      }
+
+      resultBox.innerHTML = `
+        <p>You chose to <strong style="color: ${choice === 'cooperate' ? '#2563eb' : '#dc2626'}">${choice === 'cooperate' ? 'stay silent' : 'betray'}</strong></p>
+        <p>Your partner chose to <strong style="color: ${opponent === 'cooperate' ? '#2563eb' : '#dc2626'}">${opponent === 'cooperate' ? 'stay silent' : 'betray'}</strong></p>
+        <div class="outcome ${outcomeClass}">${outcome}</div>
+      `;
+      resultBox.style.display = 'block';
+    }
+
+    // Iterated Game State
+    let gameHistory = [];
+    let iteratedScores = { you: 0, opponent: 0 };
+    let iteratedRound = 0;
+
+    const strategies = {
+      titForTat: (history) => history.length === 0 ? 'cooperate' : history[history.length - 1].you,
+      alwaysDefect: () => 'defect',
+      alwaysCooperate: () => 'cooperate',
+      grudger: (history) => history.some(h => h.you === 'defect') ? 'defect' : 'cooperate',
+      random: () => Math.random() > 0.5 ? 'cooperate' : 'defect',
+    };
+
+    function getPayoff(p1, p2) {
+      if (p1 === 'cooperate' && p2 === 'cooperate') return [3, 3];
+      if (p1 === 'cooperate' && p2 === 'defect') return [0, 5];
+      if (p1 === 'defect' && p2 === 'cooperate') return [5, 0];
+      return [1, 1];
+    }
+
+    function playIteratedRound(yourChoice) {
+      if (iteratedRound >= 10) return;
+
+      const strategy = document.getElementById('strategy-select').value;
+      const opponentMove = strategies[strategy](gameHistory);
+      const [yourPayoff, oppPayoff] = getPayoff(yourChoice, opponentMove);
+      
+      gameHistory.push({ you: yourChoice, opponent: opponentMove });
+      iteratedScores.you += yourPayoff;
+      iteratedScores.opponent += oppPayoff;
+      iteratedRound++;
+
+      updateIteratedDisplay();
+    }
+
+    function updateIteratedDisplay() {
+      document.getElementById('round-display').textContent = iteratedRound;
+      document.getElementById('your-score').textContent = iteratedScores.you;
+      document.getElementById('opp-score').textContent = iteratedScores.opponent;
+
+      // Update history
+      const historyDiv = document.getElementById('history');
+      const historyItems = document.getElementById('history-items');
+      if (gameHistory.length > 0) {
+        historyDiv.style.display = 'block';
+        historyItems.innerHTML = gameHistory.map((round, i) => 
+          `<div class="history-item">R${i+1}: You ${round.you === 'cooperate' ? '🤝' : '🗡️'} / Opp ${round.opponent === 'cooperate' ? '🤝' : '🗡️'}</div>`
+        ).join('');
+      }
+
+      // Check for game over
+      if (iteratedRound >= 10) {
+        document.getElementById('iterated-buttons').style.display = 'none';
+        const gameOverDiv = document.getElementById('game-over');
+        let result;
+        if (iteratedScores.you > iteratedScores.opponent) result = 'You won!';
+        else if (iteratedScores.you < iteratedScores.opponent) result = 'Opponent won!';
+        else result = "It's a tie!";
+
+        gameOverDiv.innerHTML = `
+          <div class="title">Game Over!</div>
+          <div>${result}</div>
+          <div class="score">Final: You ${iteratedScores.you} - ${iteratedScores.opponent} Opponent</div>
+        `;
+        gameOverDiv.style.display = 'block';
+      }
+    }
+
+    function resetIteratedGame() {
+      gameHistory = [];
+      iteratedScores = { you: 0, opponent: 0 };
+      iteratedRound = 0;
+      
+      document.getElementById('round-display').textContent = '0';
+      document.getElementById('your-score').textContent = '0';
+      document.getElementById('opp-score').textContent = '0';
+      document.getElementById('history').style.display = 'none';
+      document.getElementById('history-items').innerHTML = '';
+      document.getElementById('iterated-buttons').style.display = 'flex';
+      document.getElementById('game-over').style.display = 'none';
+    }
+
+    // Chicken Game
+    function playChicken(choice) {
+      const swerveBtn = document.getElementById('chicken-swerve');
+      const straightBtn = document.getElementById('chicken-straight');
+      const resultBox = document.getElementById('chicken-result');
+
+      // Reset button states
+      swerveBtn.classList.remove('active');
+      straightBtn.classList.remove('active');
+
+      // Activate selected button
+      if (choice === 'swerve') {
+        swerveBtn.classList.add('active');
+        resultBox.innerHTML = `
+          <p style="font-weight: bold; color: #15803d; margin-bottom: 0.5rem;">You chose negotiation.</p>
+          <p style="color: #4b5563; text-align: left;">In reality, Kennedy chose a middle path—a naval blockade (which he called a "quarantine" to sound less aggressive) combined with secret negotiations. The US agreed to remove missiles from Turkey; the Soviets removed theirs from Cuba.</p>
+          <p style="color: #4b5563; margin-top: 0.5rem; text-align: left;"><strong>Key insight:</strong> Kennedy's genius was creating a "third option" that let both sides save face. Pure game theory suggests only two choices; creative diplomacy invents new ones.</p>
+        `;
+      } else {
+        straightBtn.classList.add('active');
+        resultBox.innerHTML = `
+          <p style="font-weight: bold; color: #dc2626; margin-bottom: 0.5rem;">You chose military action.</p>
+          <p style="color: #4b5563; text-align: left;">We now know the Soviets had tactical nuclear weapons in Cuba that field commanders were authorized to use. An invasion would likely have triggered nuclear war.</p>
+          <p style="color: #4b5563; margin-top: 0.5rem; text-align: left;"><strong>Key insight:</strong> In chicken, the "rational" move is to convince your opponent you're crazy enough to go straight. But when both sides play that game, accidents happen. This is why nuclear deterrence theorists terrified themselves.</p>
+        `;
+      }
+      resultBox.style.display = 'block';
+    }
+
+    // Stag Hunt Game
+    function playStagHunt(choice) {
+      const stagBtn = document.getElementById('stag-stag');
+      const rabbitBtn = document.getElementById('stag-rabbit');
+      const resultBox = document.getElementById('stag-result');
+
+      // Reset button states
+      stagBtn.classList.remove('active');
+      rabbitBtn.classList.remove('active');
+
+      // Activate selected button
+      if (choice === 'stag') {
+        stagBtn.classList.add('active');
+        resultBox.innerHTML = `
+          <p style="font-weight: bold; color: #15803d; margin-bottom: 0.5rem;">You chose to trust.</p>
+          <p style="color: #4b5563; text-align: left;">This is the foundation of civilization. Every time humans built something larger than a family—a village, a company, a nation—they chose the stag over the rabbit.</p>
+          <p style="color: #4b5563; margin-top: 0.5rem; text-align: left;"><strong>But here's the catch:</strong> You need mechanisms to make trust reliable. Contracts. Reputations. Shared identity. Without these, rational people choose rabbits.</p>
+        `;
+      } else {
+        rabbitBtn.classList.add('active');
+        resultBox.innerHTML = `
+          <p style="font-weight: bold; color: #b45309; margin-bottom: 0.5rem;">You chose safety.</p>
+          <p style="color: #4b5563; text-align: left;">This is also rational. In fact, "hunt rabbit" is what economists call <em>risk-dominant</em>—it's the safe choice when you're uncertain about others.</p>
+          <p style="color: #4b5563; margin-top: 0.5rem; text-align: left;"><strong>The tragedy:</strong> Societies stuck in rabbit-hunting equilibrium never achieve what they could. This is the poverty trap. This is why low-trust societies stay poor.</p>
+        `;
+      }
+      resultBox.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
